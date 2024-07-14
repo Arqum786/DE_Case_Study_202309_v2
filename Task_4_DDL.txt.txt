@@ -1,0 +1,92 @@
+
+--  Creating DIM_CUSTOMERS
+CREATE TABLE DIM_CUSTOMERS (
+    Customer_Key INT(10) NOT NULL AUTO_INCREMENT,
+    Customer_ID varchar(255) NOT NULL,
+    Customer_Name VARCHAR(255) NOT NULL,
+    Segment VARCHAR(100),
+    Country VARCHAR(100),
+    City VARCHAR(100),
+    State VARCHAR(100),
+    Postal_Code VARCHAR(20),
+    Region VARCHAR(50),
+    Start_Date DATE,
+    End_Date DATE,
+    Flag CHAR(10),
+    PRIMARY KEY (Customer_Key)
+) AUTO_INCREMENT = 1;
+
+-- DIM_PRODUCTS
+
+CREATE TABLE DIM_PRODUCTS (
+    Product_Key INT(10) NOT NULL AUTO_INCREMENT,
+    Product_Id VARCHAR(30) NOT NULL,
+    Category VARCHAR(255),
+    Sub_Category VARCHAR(255),
+    Product_Name VARCHAR(255) NOT NULL,
+    Start_Date DATE,
+    End_Date DATE,
+    Flag CHAR(10),
+    PRIMARY KEY (Product_Key)
+) AUTO_INCREMENT = 1;
+
+----- DIM_ORDERS
+
+CREATE TABLE DIM_ORDERS (
+    Order_Key INT(10) NOT NULL AUTO_INCREMENT,
+    Order_ID VARCHAR(255) NOT NULL,
+    Order_Date DATE,
+    Ship_Date DATE,
+    Ship_Mode VARCHAR(100),
+    Customer_ID VARCHAR(255),
+    Load_Date DATE,
+    PRIMARY KEY (Order_Key)
+) AUTO_INCREMENT = 1;
+
+----- DIM_DATE
+
+CREATE TABLE DIM_DATE (
+    Date_Key INT(10) NOT NULL AUTO_INCREMENT,
+    Date_ID DATE,
+    Year VARCHAR(4),
+    Month VARCHAR(10),
+    Day VARCHAR(10),
+    PRIMARY KEY (Date_Key)
+) AUTO_INCREMENT = 1;
+
+----------  DIM_ORDER_DETAILS
+
+CREATE TABLE DIM_ORDER_DETAILS (
+    Order_Details_Key INT NOT NULL AUTO_INCREMENT,
+    Order_Id VARCHAR(255) NOT NULL,
+    Product_ID VARCHAR(255) NOT NULL,
+    Sales FLOAT,
+    Quantity INT,
+    Discount FLOAT,
+    Profit DOUBLE,
+    Load_Date DATE,
+    PRIMARY KEY (Order_Details_Key)
+) AUTO_INCREMENT = 1;
+
+---------- FACT_SALES
+
+CREATE TABLE FACT_SALES (
+    Sales_Key INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Customer_Key INT(10),
+    Product_Key INT(10),
+    Order_Key INT(10),
+    Date_Key INT(10),
+    Order_Details_Key INT(10),
+    Sales FLOAT,
+    Quantity INT,
+    Discount FLOAT,
+    Profit DOUBLE,
+    Load_date DATE,
+    FOREIGN KEY (Customer_Key) REFERENCES DIM_CUSTOMERS(Customer_Key),
+    FOREIGN KEY (Product_Key) REFERENCES DIM_PRODUCTS(Product_Key),
+    FOREIGN KEY (Order_Key) REFERENCES DIM_ORDERS(Order_Key),
+    FOREIGN KEY (Date_Key) REFERENCES DIM_DATE(Date_Key),
+    FOREIGN KEY (Order_Details_Key) REFERENCES DIM_ORDER_DETAILS(Order_Details_Key)
+);
+
+
